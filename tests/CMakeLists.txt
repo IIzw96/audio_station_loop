@@ -1,32 +1,31 @@
 cmake_minimum_required(VERSION 3.14)
+project(audio-loop-station-tests)
 
-# List all files containing tests. (Change as needed)
-set(TESTFILES        # All .cpp files in tests/
-    main.cpp
-    dummy.cpp
+# Add test source files
+set(TEST_SOURCES
+    main_test.cpp
+    audio_tests/playback_test.cpp
+    audio_tests/recording_test.cpp
+    audio_processing_tests/panning_test.cpp
+    audio_processing_tests/slip_test.cpp
+    audio_processing_tests/time_stretching_test.cpp
+    database_tests/database_test.cpp
+    loop_tests/loop_test.cpp
+    track_tests/track_test.cpp
+    ui_tests/ui_test.cpp
 )
 
-set(TEST_MAIN unit_tests)   # Default name for test executable (change if you wish).
-set(TEST_RUNNER_PARAMS "")  # Any arguemnts to feed the test runner (change as needed).
-
-# --------------------------------------------------------------------------------
-#                         Make Tests (no change needed).
-# --------------------------------------------------------------------------------
-add_executable(${TEST_MAIN} ${TESTFILES})
-target_link_libraries(${TEST_MAIN} PRIVATE ${LIBRARY_NAME} doctest)
-set_target_properties(${TEST_MAIN} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
-target_set_warnings(${TEST_MAIN} ENABLE ALL AS_ERROR ALL DISABLE Annoying) # Set warnings (if needed).
-
-set_target_properties(${TEST_MAIN} PROPERTIES
-    CXX_STANDARD 17
-    CXX_STANDARD_REQUIRED YES
-    CXX_EXTENSIONS NO
+# Include necessary directories for tests
+include_directories(
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/tests
 )
 
-add_test(
-    # Use some per-module/project prefix so that it is easier to run only tests for this module
-    NAME ${LIBRARY_NAME}.${TEST_MAIN}
-    COMMAND ${TEST_MAIN} ${TEST_RUNNER_PARAMS})
+# Add test executable
+add_executable(audio-loop-station-tests ${TEST_SOURCES})
 
-# Adds a 'coverage' target.
-include(CodeCoverage)
+# Link necessary libraries -- this should be the same as the base cmakelists file
+#target_link_libraries(audio-loop-station-tests <libraries>)
+
+# Add test case(s)
+add_test(NAME audio-loop-station-tests COMMAND audio-loop-station-tests)
