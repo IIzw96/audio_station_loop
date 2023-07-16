@@ -24,11 +24,17 @@ set(SOURCES
 # Add the include directory, this is for our 3rd party libraries we will use
 include_directories(include)
 
+# Find required packages
+find_package(SQLite3 REQUIRED)
+
 # Add executable
 add_executable(audio-loop-station ${SOURCES})
 
 # Link Libraries. This is where boost, rtaudio, etc will go when ready
-# target_link_libraries(audio-loop-station, <libraries>)
+target_link_libraries(audio-loop-station PRIVATE
+    SQLite::SQLite3
+    sqlite3
+)
 
 # Set the output directory
 set_target_properties(audio-loop-station PROPERTIES 
