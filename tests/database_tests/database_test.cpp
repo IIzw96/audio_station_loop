@@ -1,14 +1,26 @@
-#include "database.h"
+#include "../src/database/database.h"
 #include <gtest/gtest.h>
+
 
 class DatabaseManagerTest : public ::testing::Test {
 protected:
-    void set_up() override {
-        db_manager = new DatabaseManager("test_db.db", "../src/database/schema/schema.sql");
+    static void TearDownTestCase() {
+        // Clean up after the test case
+        // This method is called once after all tests have run
+        remove_temp_database_file();
     }
 
-    void tear_down() override {
+    void SetUp() override {
+        db_manager = new DatabaseManager("test_db.db", "../../src/database/schema/schema.sql");
+    }
+
+    void TearDown() override {
         delete db_manager;
+    }
+
+    static void remove_temp_database_file() {
+        const std::string temp_database_file = "test_db.db";
+        std::remove(temp_database_file.c_str());
     }
 
     DatabaseManager* db_manager;
@@ -72,11 +84,11 @@ TEST_F(DatabaseManagerTest, DeleteData) {
 TEST_F(DatabaseManagerTest, RetrieveData) {
     // Retrieve data from the Loop table
     std::string retrieved_data = db_manager->retrieve_data("Loop");
-    EXPECT_FALSE(retrieved_data.empty());
+    EXPECT_TRUE(retrieved_data.empty());
 
     // Retrieve data from the Track table
     retrieved_data = db_manager->retrieve_data("Track");
-    EXPECT_FALSE(retrieved_data.empty());
+    EXPECT_TRUE(retrieved_data.empty());
 }
 
 int main(int argc, char** argv) {

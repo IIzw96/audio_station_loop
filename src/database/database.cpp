@@ -88,17 +88,17 @@ void DatabaseManager::close_database() {
 }
 
 void DatabaseManager::save_database() {
-    sqlite3* backupDb;
-    int return_status = sqlite3_open(file_name_.c_str(), &backupDb);
+    sqlite3* backup_db;
+    int return_status = sqlite3_open(file_name_.c_str(), &backup_db);
     if (return_status != SQLITE_OK) {
-        std::cerr << "Cannot open backup database: " << sqlite3_errmsg(backupDb) << std::endl;
+        std::cerr << "Cannot open backup database: " << sqlite3_errmsg(backup_db) << std::endl;
         return;
     }
-    return_status = sqlite3_exec(backupDb, ".backup 'your_saved_database_file.db'", nullptr, nullptr, nullptr);
+    return_status = sqlite3_exec(backup_db, ".backup 'audio_station_loop.db'", nullptr, nullptr, nullptr);
     if (return_status != SQLITE_OK) {
-        std::cerr << "Error saving database: " << sqlite3_errmsg(backupDb) << std::endl;
+        std::cerr << "Error saving database: " << sqlite3_errmsg(backup_db) << std::endl;
     }
-    sqlite3_close(backupDb);
+    sqlite3_close(backup_db);
 }
 
 std::string DatabaseManager::read_schema_from_file(const std::string& file_name) {
