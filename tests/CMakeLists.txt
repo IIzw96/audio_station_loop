@@ -1,9 +1,12 @@
 cmake_minimum_required(VERSION 3.14)
 project(audio-loop-station-tests)
 
+set(SOURCES
+    ../src/database/database.cpp
+)
+
 # Add test source files
 set(TEST_SOURCES
-    main_test.cpp
     audio_tests/playback_test.cpp
     audio_tests/recording_test.cpp
     audio_processing_tests/panning_test.cpp
@@ -21,11 +24,20 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/tests
 )
 
-# Add test executable
-add_executable(audio-loop-station-tests ${TEST_SOURCES})
+# Find required packages
+find_package(SQLite3 REQUIRED)
+find_package(GTest REQUIRED)
 
-# Link necessary libraries -- this should be the same as the base cmakelists file
-#target_link_libraries(audio-loop-station-tests <libraries>)
+# Add test executable
+add_executable(audio-loop-station-tests ${TEST_SOURCES} ${SOURCES})
+
+# Link necessary libraries
+target_link_libraries(audio-loop-station-tests
+    SQLite::SQLite3
+    sqlite3
+    GTest::GTest
+    GTest::Main
+)
 
 # Add test case(s)
 add_test(NAME audio-loop-station-tests COMMAND audio-loop-station-tests)
