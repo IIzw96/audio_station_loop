@@ -33,7 +33,7 @@ public:
 private:
     DatabaseManager db_manager;
     LoopControls loop_controls;
-    PlaybackProcessor playback_processor;
+    Playback playback;
     RecordingProcessor recording_processor;
     TrackControls track_controls;
     
