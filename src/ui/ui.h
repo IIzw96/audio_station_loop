@@ -15,12 +15,12 @@
 class UI {
 public:
     // Constructors & Deconstructors
-    UI();
+    UI(DatabaseManager& db_manager);
     ~UI();
 
     // Define the other functions we will have to call
     void save_to_database();
-    void load_from_database();
+    void load_from_database(const char* table_name);
 
     void set_pan(int track_id, float pan);
     void set_time_stretch(float ratio);
@@ -31,12 +31,14 @@ public:
     // audio loop station. 
 
 private:
-    DatabaseManager db_manager;
-    LoopControls loop_controls;
-    Playback playback;
-    RecordingProcessor recording_processor;
-    TrackControls track_controls;
-    
-}
+    DatabaseManager& db_manager;
+    LoopControls* loop_controls;
+    Playback* playback;
+    RecordingProcessor* recording_processor;
+    TrackControls* track_controls;
+    Panning* panning;
+    TimeStretching* time_stretching;
+    Slip* slip;
+};
 
 #endif // UI_H
