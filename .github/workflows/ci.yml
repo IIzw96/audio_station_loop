@@ -44,22 +44,14 @@ jobs:
         CTEST_OUTPUT_ON_FAILURE: 1
       run: ctest -C ${{ matrix.configuration }}
       
-    - name: Install Prerequesites
-      run: sudo apt-get update && sudo apt-get upgrade
-    - name: More Prerequesites
-      run: sudo apt-get -y install build-essential openssl libssl-dev libssl1.0 libgl1-mesa-dev libqt5x11extras5
+    - name: aqt install
+      run: aqt install-qt linux desktop 6.4.3 gcc_64
       
     - name: Install Qt
-  # You may pin to the exact commit or the version.
-  # uses: jurplel/install-qt-action@2d518188e746defd451af981c3c901f463d99e29
-      uses: jurplel/install-qt-action@v3.2.1
+      uses: jurplel/install-qt-action@v3
       with:
-        # Directory to install Qt
-        dir: '${{ github.workspace }}'
-        # Version of Qt to install
-        version: 6.4.3
-        # Host platform
-        host: linux
-        # Target platform for build
-        target: desktop
-        tools: 'tools_ifw tools_qtcreator,qt.tools.qtcreator'
+        aqtversion: '==3.1.*'
+        version: '6.4.3'
+        host: 'linux'
+        target: 'desktop'
+        arch: 'gcc_64'
