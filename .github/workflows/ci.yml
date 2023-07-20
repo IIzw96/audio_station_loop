@@ -44,6 +44,11 @@ jobs:
         CTEST_OUTPUT_ON_FAILURE: 1
       run: ctest -C ${{ matrix.configuration }}
       
+    - name: Install Prerequesites
+      run: sudo apt-get update && sudo apt-get upgrade
+    - name: More Prerequesites
+      run: sudo apt-get -y install build-essential openssl libssl-dev libssl1.0 libgl1-mesa-dev libqt5x11extras5
+      
     - name: Install Qt
   # You may pin to the exact commit or the version.
   # uses: jurplel/install-qt-action@2d518188e746defd451af981c3c901f463d99e29
