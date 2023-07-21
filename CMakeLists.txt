@@ -73,9 +73,6 @@ install(TARGETS audio_station_loop
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-
-
-
 # Setup for the unit tests
 enable_testing()
 add_subdirectory(tests)
