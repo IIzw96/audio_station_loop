@@ -30,7 +30,7 @@ jobs:
         submodules: recursive
 
     - name: Install gtest
-      run: sudo apt-get install -y libgtest-dev
+      run: sudo apt-get -y install build-essential openssl libssl-dev libssl1.0 libgl1-mesa-dev libqt5x11extras5 qt6-base-dev qtbase5-dev libgtest-dev
 
     - name: Configure (${{ matrix.configuration }})
       run: cmake -S . -Bbuild -DCMAKE_BUILD_TYPE=${{ matrix.configuration }}
@@ -43,15 +43,3 @@ jobs:
       env:
         CTEST_OUTPUT_ON_FAILURE: 1
       run: ctest -C ${{ matrix.configuration }}
-      
-    - name: aqt install
-      run: aqt install-qt linux desktop 6.4.3 gcc_64
-      
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v3
-      with:
-        aqtversion: '==3.1.*'
-        version: '6.4.3'
-        host: 'linux'
-        target: 'desktop'
-        arch: 'gcc_64'
