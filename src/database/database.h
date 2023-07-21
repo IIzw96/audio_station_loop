@@ -16,6 +16,8 @@ public:
     bool delete_data(const std::string& table_name, const std::string& where_clause);
     std::string retrieve_data(const std::string& table_name);
 
+    void save_database();
+
 private:
     std::string file_name_;
     std::string schema_file_path_;
@@ -25,7 +27,6 @@ private:
     void open_database();
     void create_tables_from_schema();
     void close_database();
-    void save_database();
     std::string read_schema_from_file(const std::string& file_name);
     static int callback(void* data, int argc, char** argv, char** /* Not used */);
 };
