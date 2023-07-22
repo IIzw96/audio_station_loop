@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.14)
-project(audio_station_loop)
+project(audio_station_loop VERSION 0.1)
+
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
 # Set the C++ standard to compile with
 set(CMAKE_CXX_STANDARD 17)
@@ -19,6 +23,9 @@ set(SOURCES
     src/loop/loop.cpp
     src/track/track.cpp
     src/ui/ui.cpp
+    src/ui/mainwindow.cpp
+    src/ui/mainwindow.h
+    src/mainwindow.ui
 )
 
 # Add the include directory, this is for our 3rd party libraries we will use
@@ -26,20 +33,44 @@ include_directories(include)
 
 # Find required packages
 find_package(SQLite3 REQUIRED)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+
 
 # Add executable
-add_executable(audio-loop-station ${SOURCES})
+if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+    qt_add_executable(audio_station_loop
+        MANUAL_FINALIZATION
+        ${SOURCES}
+    )
+else()
+    add_executable(audio_station_loop
+        ${SOURCES}
+    )
+endif()
+#add_executable(audio-loop-station ${SOURCES})
 
 # Link Libraries. This is where boost, rtaudio, etc will go when ready
-target_link_libraries(audio-loop-station PRIVATE
+target_link_libraries(audio_station_loop PRIVATE
     SQLite::SQLite3
     sqlite3
+    PRIVATE Qt${QT_VERSION_MAJOR}::Widgets
 )
 
 # Set the output directory
-set_target_properties(audio-loop-station PROPERTIES 
+set_target_properties(audio_station_loop PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build")
+
+install(TARGETS audio_station_loop
+    BUNDLE DESTINATION .
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
 
 # Setup for the unit tests
 enable_testing()
 add_subdirectory(tests)
+
+if(QT_VERSION_MAJOR EQUAL 6)
+    qt_finalize_executable(audio_station_loop)
+endif()
