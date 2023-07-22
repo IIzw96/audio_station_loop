@@ -58,16 +58,8 @@ target_link_libraries(audio_station_loop PRIVATE
 )
 
 # Set the output directory
-#set_target_properties(audio-loop-station PROPERTIES
-#    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build")
-
 set_target_properties(audio_station_loop PROPERTIES
-    MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-    MACOSX_BUNDLE TRUE
-    WIN32_EXECUTABLE TRUE
-)
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build")
 
 install(TARGETS audio_station_loop
     BUNDLE DESTINATION .
