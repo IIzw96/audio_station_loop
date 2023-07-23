@@ -37,8 +37,8 @@ void UI::set_pan(int track_id, float pan) {
     std::cout << "Track " << track_id << " pan set to: " << pan << std::endl;
 }
 
-void UI::set_time_stretch(float ratio) {
-    time_stretching -> set_time_stretch_ratio(ratio);
+void UI::set_time_stretch(float ratio, int channels) {
+    time_stretching -> set_time_stretch_ratio(ratio, channels);
     std::cout << "Time stretch ratio set to: " << ratio << std::endl;
 }
 
