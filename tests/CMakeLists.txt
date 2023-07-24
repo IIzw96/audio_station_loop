@@ -3,6 +3,7 @@ project(audio-loop-station-tests)
 
 set(SOURCES
     ../src/database/database.cpp
+    ../src/audio_processing/time_stretching.cpp
 )
 
 # Add test source files
@@ -28,6 +29,10 @@ include_directories(
 find_package(SQLite3 REQUIRED)
 find_package(GTest REQUIRED)
 
+find_package(PkgConfig REQUIRED)
+pkg_search_module(FFTW REQUIRED fftw3 IMPORTED_TARGET)
+pkg_search_module(SoundTouch REQUIRED soundtouch IMPORTED_TARGET)
+
 # Add test executable
 add_executable(audio-loop-station-tests ${TEST_SOURCES} ${SOURCES})
 
@@ -37,6 +42,8 @@ target_link_libraries(audio-loop-station-tests
     sqlite3
     GTest::GTest
     GTest::Main
+    PkgConfig::FFTW
+    PkgConfig::SoundTouch
 )
 
 # Add test case(s)

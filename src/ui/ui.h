@@ -23,7 +23,7 @@ public:
     void load_from_database(const char* table_name);
 
     void set_pan(int track_id, float pan);
-    void set_time_stretch(float ratio);
+    void set_time_stretch(float ratio, int channels);
     void slip_tracks(int track_id, int offset);
 
     // Depending on how in depth we want to go, we will likely want to include other
