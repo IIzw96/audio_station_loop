@@ -31,7 +31,7 @@ jobs:
 
     - name: Install required packages
       run: |
-        sudo apt-get -y install build-essential openssl libssl-dev libssl1.0 libgl1-mesa-dev libqt5x11extras5 qt6-base-dev qtbase5-dev libgtest-dev libfftw3-dev libsoundtouch-dev portaudio19-dev libsndfile1-dev
+        sudo apt-get -y install build-essential openssl libssl-dev libssl1.0 libgl1-mesa-dev libqt5x11extras5 qt6-base-dev qtbase5-dev libgtest-dev libfftw3-dev libsoundtouch-dev librtaudio-dev libsndfile1-dev
 
     - name: Configure (${{ matrix.configuration }})
       run: cmake -S . -Bbuild -DCMAKE_BUILD_TYPE=${{ matrix.configuration }}
