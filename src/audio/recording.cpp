@@ -70,11 +70,35 @@ void RecordingProcessor::pause() {
  
 void RecordingProcessor::resume() {
     if (!is_recording) {
+        // Close the current stream if it's open
+        if (audio_input->isStreamOpen()) {
+            try {
+                audio_input->closeStream();
+            } catch (RtAudioError& e) {
+                std::cerr << "RtAudio stream closing error: " << e.getMessage() << std::endl;
+                throw std::runtime_error("Failed to close RtAudio stream.");
+            }
+        }
+
+        // Reopen the audio stream with new settings
+        RtAudio::StreamParameters params;
+        params.deviceId = audio_input->getDefaultInputDevice();
+        params.nChannels = num_channels;
+
+        RtAudio::StreamOptions options;
+        options.flags = RTAUDIO_SCHEDULE_REALTIME;
+
+        unsigned int buffer_frames = FRAMES_PER_BUFFER;
+
         try {
-            audio_input -> startStream(); // Resume audio stream
+            audio_input->openStream(&params, nullptr, RTAUDIO_FLOAT32, SAMPLE_RATE, &buffer_frames, audio_callback, this, &options);
+            audio_input->startStream();
         } catch (RtAudioError& e) {
-            std::cerr << "RtAudio stream starting error: " << e.getMessage() << std::endl;
-            throw std::runtime_error("Failed to resume RtAudio stream.");
+            std::cerr << "RtAudio startStream error: " << e.getMessage() << std::endl;
+            if (audio_input->isStreamOpen()) {
+                audio_input->closeStream();
+            }
+            throw std::runtime_error("Failed to start RtAudio stream.");
         }
 
         is_recording = true;
@@ -116,7 +140,7 @@ void RecordingProcessor::save_audio_to_file(const std::string& filename) {
     SF_INFO sf_info;
     sf_info.channels = num_channels;
     sf_info.samplerate = SAMPLE_RATE;
-    sf_info.format = SF_FORMAT_WAV | SF_FORMAT_PCM_16; // WAV file format, 16-bit PCM
+    sf_info.format = SF_FORMAT_WAV | SF_FORMAT_FLOAT; // Use SF_FORMAT_FLOAT for floating-point data
 
     // Open the file for writing
     SNDFILE* file = sf_open(filename.c_str(), SFM_WRITE, &sf_info);
@@ -126,7 +150,7 @@ void RecordingProcessor::save_audio_to_file(const std::string& filename) {
     }
 
     // Write the recorded audio data to the file
-    sf_count_t numFramesWritten = sf_write_float(file, audio_buffer.data(), audio_buffer.size());
+    sf_count_t numFramesWritten = sf_writef_float(file, audio_buffer.data(), audio_buffer.size());
     if (numFramesWritten != static_cast<sf_count_t>(audio_buffer.size())) {
         std::cerr << "Failed to write audio data to WAV file." << std::endl;
     }

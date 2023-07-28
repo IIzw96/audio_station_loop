@@ -27,11 +27,13 @@ public:
     void record();
     void resume();
     void stop();
+    void save_audio_to_file(const std::string& filename);
     void store_audio_to_buffer(const float* audio_data, unsigned long num_frames);
+    const std::vector<float>& get_audio_buffer() const {
+        return audio_buffer;
+    }
 
 private:
-    void save_audio_to_file(const std::string& filename);
-
     bool is_recording;
     int num_channels;
     RtAudio* audio_input;

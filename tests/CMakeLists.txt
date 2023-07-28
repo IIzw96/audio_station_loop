@@ -1,8 +1,11 @@
 cmake_minimum_required(VERSION 3.14)
 project(audio-loop-station-tests)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+
 set(SOURCES
     ../src/database/database.cpp
+    ../src/audio/recording.cpp
     ../src/audio_processing/time_stretching.cpp
 )
 
@@ -32,6 +35,8 @@ find_package(GTest REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_search_module(FFTW REQUIRED fftw3 IMPORTED_TARGET)
 pkg_search_module(SoundTouch REQUIRED soundtouch IMPORTED_TARGET)
+pkg_search_module(SndFile REQUIRED IMPORTED_TARGET sndfile)
+pkg_search_module(RtAudio REQUIRED IMPORTED_TARGET rtaudio)
 
 # Add test executable
 add_executable(audio-loop-station-tests ${TEST_SOURCES} ${SOURCES})
@@ -44,6 +49,8 @@ target_link_libraries(audio-loop-station-tests
     GTest::Main
     PkgConfig::FFTW
     PkgConfig::SoundTouch
+    PkgConfig::SndFile
+    PkgConfig::RtAudio
 )
 
 # Add test case(s)
