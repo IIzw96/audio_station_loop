@@ -12,7 +12,6 @@ set(SOURCES
 # Add test source files
 set(TEST_SOURCES
     audio_tests/playback_test.cpp
-    audio_tests/recording_test.cpp
     audio_processing_tests/panning_test.cpp
     audio_processing_tests/slip_test.cpp
     audio_processing_tests/time_stretching_test.cpp
@@ -21,6 +20,11 @@ set(TEST_SOURCES
     track_tests/track_test.cpp
     ui_tests/ui_test.cpp
 )
+
+# If not running on GitHub Actions, add the recording_test.cpp to TEST_SOURCES
+if (NOT DEFINED ENV{GITHUB_ACTIONS})
+    list(APPEND TEST_SOURCES audio_tests/recording_test.cpp)
+endif()
 
 # Include necessary directories for tests
 include_directories(
