@@ -36,6 +36,8 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 find_package(PkgConfig REQUIRED)
 pkg_search_module(FFTW REQUIRED fftw3 IMPORTED_TARGET)
 pkg_search_module(SoundTouch REQUIRED soundtouch IMPORTED_TARGET)
+pkg_search_module(SndFile REQUIRED IMPORTED_TARGET sndfile)
+pkg_search_module(RtAudio REQUIRED IMPORTED_TARGET rtaudio)
 
 # Add executable
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -56,6 +58,8 @@ target_link_libraries(audio_station_loop PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
     PkgConfig::FFTW
     PkgConfig::SoundTouch
+    PkgConfig::SndFile
+    PkgConfig::RtAudio
 )
 
 # Set the output directory
