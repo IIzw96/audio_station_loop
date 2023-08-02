@@ -47,3 +47,74 @@ void UI::slip_tracks(int track_id, int offset) {
     slip -> slip_track(track_id, offset);
     std::cout << "Slipped track " << track_id << " by " << offset << " samples." << std::endl;
 }
+
+void UI::save_loop(int loop_num) {
+    std::cout << "Loop loaded or created" << std::endl;
+    db_manager.create_loop(std::to_string(loop_num));
+    int id = db_manager.find_loop_id(std::to_string(loop_num));
+
+    std::cout << "From HERE" << std::endl;
+    std::cout << id << std::endl;
+    if (Track1) {
+        int status = db_manager.replace_track_to_loop(id, "Track1" + std::to_string(id));
+        if (status == -1) {
+            std::cerr << "Could not create loop" << std::endl;
+            return;
+        }
+        std::cout << "Track1 saved" << std::endl;
+    }
+    if (Track2) {
+        int status = db_manager.replace_track_to_loop(id, "Track2" + std::to_string(id));
+        if (status == -1) {
+            std::cerr << "Could not create loop" << std::endl;
+            return;
+        }
+        std::cout << "Track2 saved" << std::endl;
+
+    }
+    if (Track3) {
+        int status = db_manager.replace_track_to_loop(id, "Track3" + std::to_string(id));
+        if (status == -1) {
+            std::cerr << "Could not create loop" << std::endl;
+            return;
+        }
+        std::cout << "Track3 saved" << std::endl;
+
+    }
+    if (Track4) {
+        int status = db_manager.replace_track_to_loop(id, "Track4" + std::to_string(id));
+        if (status == -1) {
+            std::cerr << "Could not create loop" << std::endl;
+            return;
+        }
+        std::cout << "Track4 saved" << std::endl;
+
+    }
+}
+
+void UI::load_loop(int loop_num) {
+    std::cout << "loading loop" << std::endl;
+    int id = db_manager.find_loop_id(std::to_string(loop_num));
+    std::vector<std::string> track_paths = db_manager.load_tracks_by_loop(id);
+
+    for ( unsigned long i=0; i<track_paths.size(); i++)
+        std::cout << track_paths[i] << std::endl;
+
+}
+
+void UI::arm_track_1() {
+    Track1 = !Track1;
+    std::cout << Track1 << std::endl;
+}
+void UI::arm_track_2() {
+    Track2 = !Track2;
+     std::cout << Track2 << std::endl;
+}
+void UI::arm_track_3() {
+    Track3 = !Track3;
+     std::cout << Track3 << std::endl;
+}
+void UI::arm_track_4() {
+    Track4 = !Track4;
+     std::cout << Track4 << std::endl;
+}
