@@ -144,6 +144,10 @@ float Playback::get_volume() const {
     return volume;
 }
 
+bool Playback::get_is_playing() const {
+    return is_playing;
+}
+
 int Playback::audio_callback(void* output_buffer, void* input_buffer, unsigned int buffer_size,
                              double time_info, RtAudioStreamStatus status, void* user_data) {
     float* output = static_cast<float*>(output_buffer);

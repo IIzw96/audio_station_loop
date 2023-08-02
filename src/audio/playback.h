@@ -20,6 +20,7 @@ public:
 
     void set_volume(float value);
     float get_volume() const;
+    bool get_is_playing() const;
 
 private:
     bool is_playing;
