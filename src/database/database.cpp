@@ -124,6 +124,10 @@ std::vector<std::string> DatabaseManager::load_tracks_by_loop(const int& loop_id
         sqlite3_free(err_msg);
         return file_paths;
     }
+    if (file_paths.empty()) {
+        file_paths.push_back("");
+        return file_paths;
+    }
     return file_paths;
 }
 void DatabaseManager::open_database() {
@@ -208,6 +212,10 @@ int DatabaseManager::callback_get_id(void* single_int, int argc, char** argv, ch
 
 int DatabaseManager::callback_load_tracks(void* file_arr, int argc, char** argv, char** colName) {
     std::vector<std::string>* results = (std::vector<std::string>*)file_arr;
+
+    if (argv[0] == nullptr) {
+        return 0;
+    }
     for (int i = 0; i < argc; i++) {
         results->push_back(argv[i]);
     }

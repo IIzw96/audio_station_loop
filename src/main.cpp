@@ -11,6 +11,8 @@ int main(int argc, char *argv[]) {
     UI user_interface(data_base);
 
     MainWindow window (user_interface);
+
+    user_interface.load_loop(0);
     window.show();
     return app.exec();
 }

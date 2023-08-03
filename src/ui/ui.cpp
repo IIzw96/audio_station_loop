@@ -97,6 +97,7 @@ void UI::load_loop(int loop_num) {
     int id = db_manager.find_loop_id(std::to_string(loop_num));
     std::vector<std::string> track_paths = db_manager.load_tracks_by_loop(id);
 
+    if (track_paths[0] == "") std::cout << "No tracks with path for that loop_id" << std::endl;
     for ( unsigned long i=0; i<track_paths.size(); i++)
         std::cout << track_paths[i] << std::endl;
 
