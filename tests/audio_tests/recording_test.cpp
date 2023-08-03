@@ -1,3 +1,4 @@
+#include "../src/constants.h"
 #include "../src/audio/recording.h"
 #include <gtest/gtest.h>
 #include <filesystem>

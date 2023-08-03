@@ -1,13 +1,11 @@
 #ifndef RECORDING_H
 #define RECORDING_H
 
+#include "../constants.h"
 #include <iostream>
 #include <vector>
 #include <rtaudio/RtAudio.h>
 #include <sndfile.h>
-
-const int SAMPLE_RATE = 44100;
-const unsigned int FRAMES_PER_BUFFER = 256;
 
 class RecordingProcessor {
 public:

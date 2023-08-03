@@ -5,13 +5,13 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
 set(SOURCES
     ../src/database/database.cpp
+    ../src/audio/playback.cpp
     ../src/audio/recording.cpp
     ../src/audio_processing/time_stretching.cpp
 )
 
 # Add test source files
 set(TEST_SOURCES
-    audio_tests/playback_test.cpp
     audio_processing_tests/panning_test.cpp
     audio_processing_tests/slip_test.cpp
     audio_processing_tests/time_stretching_test.cpp
@@ -23,6 +23,7 @@ set(TEST_SOURCES
 
 # If not running on GitHub Actions, add the recording_test.cpp to TEST_SOURCES
 if (NOT DEFINED ENV{GITHUB_ACTIONS})
+    list(APPEND TEST_SOURCES audio_tests/playback_test.cpp)
     list(APPEND TEST_SOURCES audio_tests/recording_test.cpp)
 endif()
 
