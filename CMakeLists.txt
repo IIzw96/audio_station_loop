@@ -28,14 +28,16 @@ set(SOURCES
     src/mainwindow.ui
 )
 
-# Add the include directory, this is for our 3rd party libraries we will use
-include_directories(include)
-
 # Find required packages
 find_package(SQLite3 REQUIRED)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
+find_package(PkgConfig REQUIRED)
+pkg_search_module(FFTW REQUIRED fftw3 IMPORTED_TARGET)
+pkg_search_module(SoundTouch REQUIRED soundtouch IMPORTED_TARGET)
+pkg_search_module(SndFile REQUIRED IMPORTED_TARGET sndfile)
+pkg_search_module(RtAudio REQUIRED IMPORTED_TARGET rtaudio)
 
 # Add executable
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -48,13 +50,16 @@ else()
         ${SOURCES}
     )
 endif()
-#add_executable(audio-loop-station ${SOURCES})
 
 # Link Libraries. This is where boost, rtaudio, etc will go when ready
 target_link_libraries(audio_station_loop PRIVATE
     SQLite::SQLite3
     sqlite3
-    PRIVATE Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::Widgets
+    PkgConfig::FFTW
+    PkgConfig::SoundTouch
+    PkgConfig::SndFile
+    PkgConfig::RtAudio
 )
 
 # Set the output directory

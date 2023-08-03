@@ -4,7 +4,7 @@ UI::UI(DatabaseManager& db_manager) : db_manager(db_manager) {
     // Constructor
     loop_controls = new LoopControls();
     playback = new Playback();
-    recording_processor = new RecordingProcessor();
+    recording_processor = new RecordingProcessor(2); // Default to 
     track_controls = new TrackControls();
     panning = new Panning();
     time_stretching = new TimeStretching();
@@ -37,8 +37,8 @@ void UI::set_pan(int track_id, float pan) {
     std::cout << "Track " << track_id << " pan set to: " << pan << std::endl;
 }
 
-void UI::set_time_stretch(float ratio) {
-    time_stretching -> set_time_stretch_ratio(ratio);
+void UI::set_time_stretch(float ratio, int channels) {
+    time_stretching -> set_time_stretch_ratio(ratio, channels);
     std::cout << "Time stretch ratio set to: " << ratio << std::endl;
 }
 
