@@ -16,7 +16,7 @@ public:
     bool edit_data(const std::string& table_name, const std::string& set_clause, const std::string& where_clause);
     bool delete_data(const std::string& table_name, const std::string& where_clause);
     std::string retrieve_data(const std::string& table_name);
-    void create_loop(const std::string &loop_name);
+    int create_loop(const std::string &loop_name);
     int insert_into_column(const std::string& table_name, const std::string &column, const std::string& data);
     int find_loop_id(const std::string& loop_name);
     int replace_track_to_loop(const int& loop_id, const std::string& track_name );

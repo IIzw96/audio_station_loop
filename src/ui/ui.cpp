@@ -53,8 +53,6 @@ void UI::save_loop(int loop_num) {
     db_manager.create_loop(std::to_string(loop_num));
     int id = db_manager.find_loop_id(std::to_string(loop_num));
 
-    std::cout << "From HERE" << std::endl;
-    std::cout << id << std::endl;
     if (Track1) {
         int status = db_manager.replace_track_to_loop(id, "Track1" + std::to_string(id));
         if (status == -1) {

@@ -62,16 +62,16 @@ std::string DatabaseManager::retrieve_data(const std::string& table_name) {
     return result;
 }
 
-void DatabaseManager::create_loop(const std::string &loop_name) {
-    std::string sql = "INSERT INTO Loop (loop_name) VALUES (" + loop_name + ");";
+int DatabaseManager::create_loop(const std::string &loop_name) {
+    std::string sql = "INSERT OR IGNORE INTO Loop (loop_name) VALUES (" + loop_name + ");";
     char* err_msg;
     int return_status = sqlite3_exec(db_, sql.c_str(), nullptr, nullptr, &err_msg);
     if (return_status != SQLITE_OK) {
         std::cerr << "Error retrieving data: " << sqlite3_errmsg(db_) << std::endl;
         sqlite3_free(err_msg);
-        return;
+        return return_status;
     }
-    return;
+    return return_status;
 }
 
 int DatabaseManager::insert_into_column(const std::string& table_name, const std::string &column, const std::string& data) {
@@ -144,13 +144,13 @@ void DatabaseManager::create_tables_from_schema() {
     char* err_msg;
     std::cout << "Creating tables..." << std::endl;
     std::cout << schema.c_str() << std::endl;
-    std::string sch = "CREATE TABLE Loop ("
+    std::string sch = "CREATE TABLE IF NOT EXISTS Loop ("
                 "loop_id INTEGER PRIMARY KEY,"
                 "loop_name TEXT UNIQUE,"
                 "loop_length TEXT,"
                 "loop_bpm INTEGER);"
 
-            "CREATE TABLE Track ("
+            "CREATE TABLE IF NOT EXISTS Track ("
                 "track_id INTEGER PRIMARY KEY,"
                 "loop_id INTEGER,"
                 "track_name TEXT UNIQUE,"
