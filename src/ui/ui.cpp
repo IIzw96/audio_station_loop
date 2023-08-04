@@ -3,8 +3,8 @@
 UI::UI(DatabaseManager& db_manager) : db_manager(db_manager) {
     // Constructor
     loop_controls = new LoopControls();
-    playback = new Playback();
-    recording_processor = new RecordingProcessor(2); // Default to 
+    playback = new Playback(2); // Default to two channels
+    recording_processor = new RecordingProcessor(2); // Default to two channels
     track_controls = new TrackControls();
     panning = new Panning();
     time_stretching = new TimeStretching();
