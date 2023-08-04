@@ -15,6 +15,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_spinBox_valueChanged(int arg1)
 {
     gui.load_loop(arg1);
+    ui->lcdNumber->display(arg1);
 }
 
 
