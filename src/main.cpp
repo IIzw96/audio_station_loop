@@ -6,7 +6,7 @@
 
 int main(int argc, char *argv[]) {
     // Create an instance of the DatabaseManager
-    DatabaseManager data_base("audio_station_loop.db", "/database/schema/schema.sql");
+    DatabaseManager data_base("audio_station_loop.db", "database/schema/schema.sql");
     QApplication app(argc, argv);
     UI user_interface(data_base);
 
