@@ -91,6 +91,41 @@ TEST_F(DatabaseManagerTest, RetrieveData) {
     EXPECT_TRUE(retrieved_data.empty());
 }
 
+TEST_F(DatabaseManagerTest, CreateLoop) {
+    // Creating Loop
+    std::string loop_1 = "1";
+    int status = db_manager->create_loop(loop_1);
+    EXPECT_EQ(0, status);
+}
+
+TEST_F(DatabaseManagerTest, InsertIntoColumn) {
+    // Inserting column into table
+    std::string table = "Loop";
+    std::string column = "loop_length";
+    std::string data = "'50'";
+    int status = db_manager->insert_into_column(table, column, data);
+    EXPECT_EQ(0, status);
+}
+
+TEST_F(DatabaseManagerTest, FindLoopId) {
+    std::string loop_name = "1";
+    int status = db_manager->find_loop_id(loop_name);
+    EXPECT_EQ(1, status);
+}
+
+TEST_F(DatabaseManagerTest, ReplaceTrackToLoop) {
+    int loop_id = 1;
+    std::string track_name = "Track11";
+    int status = db_manager->replace_track_to_loop(loop_id, track_name);
+    EXPECT_EQ(0, status);
+}
+
+TEST_F(DatabaseManagerTest, LoadTracksByLoop) {
+    int loop_id = 1;
+    std::vector<std::string> file_paths = db_manager->load_tracks_by_loop(loop_id);
+    EXPECT_EQ(file_paths[0], "fake_file_path");
+}
+
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
