@@ -27,9 +27,24 @@ bool DatabaseManager::insert_data(const std::string& table_name, const std::stri
 }
 
 bool DatabaseManager::edit_data(const std::string& table_name, const std::string& set_clause, const std::string& where_clause) {
-    std::string sql = "UPDATE " + table_name + " SET " + set_clause + " WHERE " + where_clause;
+    // Check if the table has any matching rows for the given where_clause
     char* err_msg;
-    int return_status = sqlite3_exec(db_, sql.c_str(), nullptr, nullptr, &err_msg);
+    std::string count_rows_sql = "SELECT COUNT(*) FROM " + table_name + " WHERE " + where_clause;
+    int row_count = 0;
+    int return_status = sqlite3_exec(db_, count_rows_sql.c_str(), count_rows_callback, &row_count, &err_msg);
+    if (return_status != SQLITE_OK) {
+        std::cerr << "Error checking rows existence: " << err_msg << std::endl;
+        sqlite3_free(err_msg);
+        return false;
+    }
+
+    if (row_count == 0) {
+        std::cerr << "No matching rows found for update." << std::endl;
+        return false;
+    }
+
+    std::string sql = "UPDATE " + table_name + " SET " + set_clause + " WHERE " + where_clause;
+    return_status = sqlite3_exec(db_, sql.c_str(), nullptr, nullptr, &err_msg);
     if (return_status != SQLITE_OK) {
         std::cerr << "Error editing data: " << err_msg << std::endl;
         sqlite3_free(err_msg);
@@ -88,7 +103,7 @@ int DatabaseManager::insert_into_column(const std::string& table_name, const std
 }
 
 int DatabaseManager::find_loop_id(const std::string& loop_name){
-    std::string sql = "SELECT loop_id FROM Loop WHERE loop_name = " + loop_name;
+    std::string sql = "SELECT loop_id FROM Loop WHERE loop_name = '" + loop_name + "'";
     char* err_msg;
     int single_int_value;
     int return_status = sqlite3_exec(db_, sql.c_str(), callback_get_id, &single_int_value, &err_msg);
@@ -142,22 +157,8 @@ void DatabaseManager::open_database() {
 void DatabaseManager::create_tables_from_schema() {
     std::string schema = read_schema_from_file(schema_file_path_);
     char* err_msg;
-    std::cout << "Creating tables..." << std::endl;
-        std::cout << schema.c_str() << std::endl;
-        std::string sch = "CREATE TABLE IF NOT EXISTS Loop ("
-                    "loop_id INTEGER PRIMARY KEY,"
-                    "loop_name TEXT UNIQUE,"
-                    "loop_length TEXT,"
-                    "loop_bpm INTEGER);"
 
-                "CREATE TABLE IF NOT EXISTS Track ("
-                    "track_id INTEGER PRIMARY KEY,"
-                    "loop_id INTEGER,"
-                    "track_name TEXT UNIQUE,"
-                    "track_type TEXT,"
-                    "track_file_path TEXT,"
-                    "FOREIGN KEY (loop_id) REFERENCES Loop(loop_id))";
-    int return_status = sqlite3_exec(db_, sch.c_str(), nullptr, nullptr, &err_msg);
+    int return_status = sqlite3_exec(db_, schema.c_str(), nullptr, nullptr, &err_msg);
     if (return_status != SQLITE_OK) {
         std::cerr << "Error executing schema: " << err_msg << std::endl;
         sqlite3_free(err_msg);
@@ -186,7 +187,17 @@ void DatabaseManager::save_database() {
 }
 
 std::string DatabaseManager::read_schema_from_file(const std::string& file_name) {
+    // Check that file exists
+    if (!std::filesystem::exists(file_name)) {
+        throw std::runtime_error("File not found: " + file_name);
+    }
+
     std::ifstream file(file_name);
+
+    // Check it the file was opened
+    if (!file.is_open()) {
+        throw std::runtime_error("File not found or could not be opened: " + file_name);
+    }
     std::string schema((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
     return schema;
 }
@@ -220,4 +231,13 @@ int DatabaseManager::callback_load_tracks(void* file_arr, int argc, char** argv,
         results->push_back(argv[i]);
     }
    return 0;
+}
+
+int DatabaseManager::count_rows_callback(void* data, int argc, char** argv, char** /* Not used */) {
+    // Used to check if the row exists before editing a non-existant row.
+    int* row_count = static_cast<int*>(data);
+    if (argc > 0 && argv[0]) {
+        *row_count = std::stoi(argv[0]);
+    }
+    return 0;
 }

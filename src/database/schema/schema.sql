@@ -12,4 +12,4 @@ CREATE TABLE Track (
     track_type TEXT,
     track_file_path TEXT,
     FOREIGN KEY (loop_id) REFERENCES Loop(loop_id)
-)
+);

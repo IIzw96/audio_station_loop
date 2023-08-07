@@ -2,6 +2,7 @@
 #define DATABASE_H
 
 #include <string>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <sqlite3.h>
@@ -36,6 +37,7 @@ private:
     static int callback(void* data, int argc, char** argv, char** /* Not used */);
     static int callback_get_id(void* not_used, int argc, char** argv, char** colName);
     static int callback_load_tracks(void* file_arr, int argc, char** argv, char** colName);
+    static int count_rows_callback(void* data, int argc, char** argv, char** colNames);
 };
 
 #endif // DATABASE_H
