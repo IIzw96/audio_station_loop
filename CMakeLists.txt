@@ -26,6 +26,7 @@ set(SOURCES
     src/ui/mainwindow.cpp
     src/ui/mainwindow.h
     src/mainwindow.ui
+    src/img.qrc
 )
 
 # Find required packages

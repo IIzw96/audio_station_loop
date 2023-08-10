@@ -101,6 +101,14 @@ void UI::load_loop(int loop_num) {
 
 }
 
+void UI::start_recording () {
+    recording_processor->record();
+}
+
+void UI::stop_recording() {
+    recording_processor->stop();
+}
+
 void UI::arm_track_1() {
     Track1 = !Track1;
     std::cout << Track1 << std::endl;
@@ -116,4 +124,20 @@ void UI::arm_track_3() {
 void UI::arm_track_4() {
     Track4 = !Track4;
      std::cout << Track4 << std::endl;
+}
+
+bool UI::get_track_1(){
+    return Track1;
+}
+
+bool UI::get_track_2(){
+    return Track2;
+}
+
+bool UI::get_track_3(){
+    return Track3;
+}
+
+bool UI::get_track_4(){
+    return Track4;
 }

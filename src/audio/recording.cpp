@@ -34,9 +34,12 @@ void RecordingProcessor::record() {
         options.flags = RTAUDIO_SCHEDULE_REALTIME;
 
         unsigned int buffer_frames = FRAMES_PER_BUFFER;
-
+        std::cout << params.deviceId << std::endl;
+        std::cout << params.nChannels << std::endl;
         try {
+            std::cout << "From here" << std::endl;
             audio_input -> openStream(&params, nullptr, RTAUDIO_FLOAT32, SAMPLE_RATE, &buffer_frames, audio_callback, this, &options);
+            std::cout << "From here2" << std::endl;
             audio_input -> startStream();
         } catch (RtAudioError& e) {
             std::cerr << "RtAudio startStream error: " << e.getMessage() << std::endl;
