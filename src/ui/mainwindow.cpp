@@ -49,12 +49,12 @@ void MainWindow::on_recButton_1_clicked()
 {
     if (gui.get_track_1()) {
         std::cout << "ON" << std::endl;
-        gui.start_recording();
+        // TODO once sound card recognized -> gui.start_recording();
     }
 
     if(!gui.get_track_1()) {
         std::cout << "OFF" << std::endl;
-        gui.stop_recording();
+        // TODO once sound card recognized -> gui.stop_recording();
     }
 }
 
