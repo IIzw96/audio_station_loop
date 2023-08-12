@@ -6,8 +6,8 @@ UI::UI(DatabaseManager& db_manager) : db_manager(db_manager) {
     playback = new Playback(2); // Default to two channels
     recording_processor = new RecordingProcessor(2); // Default to two channels
     track_controls = new TrackControls();
-    panning = new Panning();
-    time_stretching = new TimeStretching();
+    panning = new Panning(db_manager);
+    time_stretching = new TimeStretching(); // Update this if we want to use something other than the defaults
     slip = new Slip();
 }
 
@@ -33,7 +33,6 @@ void UI::load_from_database(const char* table_name) {
 }
 
 void UI::set_pan(int track_id, float pan) {
-    panning -> set_pan(track_id, pan);
     std::cout << "Track " << track_id << " pan set to: " << pan << std::endl;
 }
 

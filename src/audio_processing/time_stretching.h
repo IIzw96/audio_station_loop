@@ -1,6 +1,7 @@
 #ifndef TIME_STRETCHING_H
 #define TIME_STRETCHING_H
 
+#include "../constants.h"
 #include <vector>
 #include <complex>
 #include <SoundTouch.h> // Include the SoundTouch library header
@@ -19,7 +20,6 @@ public:
     size_t get_fft_size() const;
 
 private:
-    const double PI = 3.14159265358979323846;
     const size_t fft_size = 1024;
     soundtouch::SoundTouch sound_touch;
 
