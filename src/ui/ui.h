@@ -27,10 +27,16 @@ public:
     void slip_tracks(int track_id, int offset);
     void save_loop(int loop_num);
     void load_loop(int loop_num);
+    void start_recording();
+    void stop_recording();
     void arm_track_1();
     void arm_track_2();
     void arm_track_3();
     void arm_track_4();
+    bool get_track_1();
+    bool get_track_2();
+    bool get_track_3();
+    bool get_track_4();
     // Depending on how in depth we want to go, we will likely want to include other
     // declarations in the future that will allow functionality more similar to an
     // audio loop station.

@@ -44,3 +44,17 @@ void MainWindow::on_pushButton_5_clicked()
     spinboxvalue = ui->spinBox->value();
     gui.save_loop(spinboxvalue);
 }
+
+void MainWindow::on_recButton_1_clicked()
+{
+    if (gui.get_track_1()) {
+        std::cout << "ON" << std::endl;
+        // TODO once sound card recognized -> gui.start_recording();
+    }
+
+    if(!gui.get_track_1()) {
+        std::cout << "OFF" << std::endl;
+        // TODO once sound card recognized -> gui.stop_recording();
+    }
+}
+
